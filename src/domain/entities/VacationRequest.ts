@@ -98,7 +98,7 @@ export class VacationRequest extends Entity<VacationRequestId> {
     if (this._type.value === 'days') {
       return this._days.value;
     } else {
-      return this._hours.value / 8; // Assuming 8 hours per day
+      return this._hours.value / 8;
     }
   }
 

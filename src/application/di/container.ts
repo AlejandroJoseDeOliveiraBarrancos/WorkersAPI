@@ -23,7 +23,6 @@ import { Database } from '../../infrastructure/database/Database';
 
 const container = new Container();
 
-// Database
 container.bind<Database>(TYPES.Database).to(Database).inSingletonScope();
 
 container.bind<IWorkerRepository>(TYPES.WorkerRepository).to(WorkerRepository);

@@ -39,22 +39,18 @@ export class CreateVacationRequestUseCase {
   ) {}
 
   async execute(request: CreateVacationRequestRequest): Promise<CreateVacationRequestResponse> {
-    // Verify worker exists
     const worker = await this.workerRepository.findById(WorkerId.create(request.workerId));
     if (!worker) {
       throw new Error(`Worker with id ${request.workerId} not found`);
     }
 
-    // Get existing vacation requests for this worker
     const existingRequests = await this.vacationRequestRepository.findByWorkerId(worker.id);
 
-    // Check if worker has enough vacation days
     const requestedDays = request.type === 'days' ? request.days : request.hours / 8;
     if (!this.vacationCalculationService.canRequestVacation(worker, existingRequests, requestedDays)) {
       throw new Error('Worker does not have enough available vacation days');
     }
 
-    // Validate date range
     if (request.startDate >= request.endDate) {
       throw new Error('Start date must be before end date');
     }
